@@ -183,3 +183,39 @@ make init
 ```
 
 The application will be fully running with Docker 🚀
+
+
+### Cache invalidation after imports (revision key)
+
+To keep the API fast, the stock change endpoints are cached for a short time (2 minutes).
+However, after importing a new Excel file, cached responses must be invalidated.
+
+We solve this by using a per-company cache revision key:
+
+- Revision key: `stock:rev:{company_id}`
+- After every successful import, the job increments and stores this revision key forever.
+- API cache keys include the revision number, e.g.:
+    - `stock_change:v{rev}:{companyId}:{from}:{to}`
+    - `stock_period_changes:v{rev}:{companyId}:{latestDate}`
+
+So when a new import happens, the revision increases and the API automatically generates new cache keys,
+making old cached responses effectively obsolete (no manual cache clearing needed).
+
+
+## Postman Collection
+
+A ready-to-use Postman collection is included in this repository.
+
+Location: 
+
+   postman/Stock-Excel-Reporter.postman_collection.json
+   postman/Stock-Excel-Reporter.postman_environment.json
+
+
+### How to use
+
+1. Open Postman
+2. Import both files (Collection and Environment)
+3. Select the environment: **Stock Excel Reporter Local**
+4. For the `stock-imports` request, choose a real `.xlsx` file from your system
+5. Run the requests in order
