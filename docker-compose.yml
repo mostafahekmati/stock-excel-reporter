@@ -54,6 +54,13 @@ services:
     command: php artisan queue:work --tries=1 --timeout=0
     restart: unless-stopped
 
+  node:
+      image: node:20-alpine
+      container_name: stock_node
+      working_dir: /var/www
+      volumes:
+        - ./:/var/www
+      command: sh -lc "npm install && npm run build"
 
 volumes:
   mysql_data:

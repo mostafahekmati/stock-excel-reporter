@@ -219,3 +219,83 @@ Location:
 3. Select the environment: **Stock Excel Reporter Local**
 4. For the `stock-imports` request, choose a real `.xlsx` file from your system
 5. Run the requests in order
+
+
+## Simple Upload UI (No Auth)
+
+This project includes a minimal web UI (no login) to upload an Excel file and trigger the same background import flow as the API.
+
+After running the project, open:
+
+http://localhost:8080/imports
+
+
+You can:
+
+Select a company
+
+Upload an .xlsx file
+
+Automatically track the import status
+
+## UI Pages
+
+The following web pages are available:
+
+GET /imports → Upload form page
+
+POST /imports → Starts the background import
+
+GET /imports/{id} → Import status page (auto-refresh)
+
+## How the Status Page Works
+
+The status page automatically polls the API until the import is completed.
+
+It calls:
+
+GET /api/v1/stock-imports/{id}
+
+
+and refreshes the status every few seconds until the status becomes:
+
+done
+
+## No Authentication Required
+
+This UI is intentionally kept simple for the purpose of this task.
+
+No login
+
+No authentication
+
+Direct interaction with the existing API
+
+## Frontend Stack
+
+The UI is built using:
+
+TailwindCSS
+
+Vite (Laravel Vite Plugin)
+
+Prebuilt assets are already committed to the repository inside:
+
+public/build
+
+
+So the UI works immediately after:
+
+make up
+make init
+
+
+No Node.js setup is required to run the project.
+
+
+
+
+
+
+
+
